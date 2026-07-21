@@ -88,10 +88,6 @@
 
 ## Совместимость с OGSM 2.4
 
-- `device().cam_dir` — стандартный путь, fallback chain при nil
-- `sobj.position` write — READ-ONLY, крашит (фикс v1.3)
-- `sim_*` секции — если отсутствуют, тихий fail
-
 ---
 
 ## Ограничения
