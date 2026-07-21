@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<spawner>
+	<!-- Background: full window (700x580) -->
+	<background x="0" y="0" width="700" height="580" stretch="1">
+		<texture>ui\ui_dg_inventory</texture>
+	</background>
+
+	<!-- Title at top -->
+	<caption x="10" y="6" width="680" height="24">
+		<text align="c" font="graffiti22" r="255" g="200" b="80">SPAWNER  -  OGSM 2.4</text>
+	</caption>
+
+	<!-- ============================================================ -->
+	<!-- 10 category buttons (left column, x=10)                       -->
+	<!-- ============================================================ -->
+	<cat_0 x="10" y="40" width="170" height="34">
+		<texture_e>ui\ui_btn_mm_e</texture_e>
+		<texture_t>ui\ui_btn_mm_t</texture_t>
+		<texture_h>ui\ui_btn_mm_h</texture_h>
+		<text align="c" font="graffiti19" r="220" g="220" b="220">Pistols</text>
+	</cat_0>
+	<cat_1 x="10" y="78" width="170" height="34">
+		<texture_e>ui\ui_btn_mm_e</texture_e>
+		<texture_t>ui\ui_btn_mm_t</texture_t>
+		<texture_h>ui\ui_btn_mm_h</texture_h>
+		<text align="c" font="graffiti19" r="220" g="220" b="220">Assault / SMG</text>
+	</cat_1>
+	<cat_2 x="10" y="116" width="170" height="34">
+		<texture_e>ui\ui_btn_mm_e</texture_e>
+		<texture_t>ui\ui_btn_mm_t</texture_t>
+		<texture_h>ui\ui_btn_mm_h</texture_h>
+		<text align="c" font="graffiti19" r="220" g="220" b="220">Snipers</text>
+	</cat_2>
+	<cat_3 x="10" y="154" width="170" height="34">
+		<texture_e>ui\ui_btn_mm_e</texture_e>
+		<texture_t>ui\ui_btn_mm_t</texture_t>
+		<texture_h>ui\ui_btn_mm_h</texture_h>
+		<text align="c" font="graffiti19" r="220" g="220" b="220">Shotguns</text>
+	</cat_3>
+	<cat_4 x="10" y="192" width="170" height="34">
+		<texture_e>ui\ui_btn_mm_e</texture_e>
+		<texture_t>ui\ui_btn_mm_t</texture_t>
+		<texture_h>ui\ui_btn_mm_h</texture_h>
+		<text align="c" font="graffiti19" r="220" g="220" b="220">Launchers</text>
+	</cat_4>
+	<cat_5 x="10" y="230" width="170" height="34">
+		<texture_e>ui\ui_btn_mm_e</texture_e>
+		<texture_t>ui\ui_btn_mm_t</texture_t>
+		<texture_h>ui\ui_btn_mm_h</texture_h>
+		<text align="c" font="graffiti19" r="220" g="220" b="220">Ammo</text>
+	</cat_5>
+	<cat_6 x="10" y="268" width="170" height="34">
+		<texture_e>ui\ui_btn_mm_e</texture_e>
+		<texture_t>ui\ui_btn_mm_t</texture_t>
+		<texture_h>ui\ui_btn_mm_h</texture_h>
+		<text align="c" font="graffiti19" r="220" g="220" b="220">Artefacts</text>
+	</cat_6>
+	<cat_7 x="10" y="306" width="170" height="34">
+		<texture_e>ui\ui_btn_mm_e</texture_e>
+		<texture_t>ui\ui_btn_mm_t</texture_t>
+		<texture_h>ui\ui_btn_mm_h</texture_h>
+		<text align="c" font="graffiti19" r="220" g="220" b="220">Equipment</text>
+	</cat_7>
+	<cat_8 x="10" y="344" width="170" height="34">
+		<texture_e>ui\ui_btn_mm_e</texture_e>
+		<texture_t>ui\ui_btn_mm_t</texture_t>
+		<texture_h>ui\ui_btn_mm_h</texture_h>
+		<text align="c" font="graffiti19" r="220" g="220" b="220">Mutants</text>
+	</cat_8>
+	<cat_9 x="10" y="382" width="170" height="34">
+		<texture_e>ui\ui_btn_mm_e</texture_e>
+		<texture_t>ui\ui_btn_mm_t</texture_t>
+		<texture_h>ui\ui_btn_mm_h</texture_h>
+		<text align="c" font="graffiti19" r="220" g="220" b="220">Stalkers</text>
+	</cat_9>
+
+	<!-- ============================================================ -->
+	<!-- Item grid (right side, 3 cols x 4 rows = 12 slots, 10 used)   -->
+	<!-- ============================================================ -->
+	<item_0 x="200" y="40" width="160" height="44">
+		<texture_e>ui_button_ordinary_e</texture_e>
+		<texture_t>ui_button_ordinary_t</texture_t>
+		<texture_h>ui_button_ordinary_h</texture_h>
+		<text align="c" font="letterica18" r="230" g="230" b="230">--</text>
+	</item_0>
+	<item_1 x="370" y="40" width="160" height="44">
+		<texture_e>ui_button_ordinary_e</texture_e>
+		<texture_t>ui_button_ordinary_t</texture_t>
+		<texture_h>ui_button_ordinary_h</texture_h>
+		<text align="c" font="letterica18" r="230" g="230" b="230">--</text>
+	</item_1>
+	<item_2 x="540" y="40" width="150" height="44">
+		<texture_e>ui_button_ordinary_e</texture_e>
+		<texture_t>ui_button_ordinary_t</texture_t>
+		<texture_h>ui_button_ordinary_h</texture_h>
+		<text align="c" font="letterica18" r="230" g="230" b="230">--</text>
+	</item_2>
+
+	<item_3 x="200" y="92" width="160" height="44">
+		<texture_e>ui_button_ordinary_e</texture_e>
+		<texture_t>ui_button_ordinary_t</texture_t>
+		<texture_h>ui_button_ordinary_h</texture_h>
+		<text align="c" font="letterica18" r="230" g="230" b="230">--</text>
+	</item_3>
+	<item_4 x="370" y="92" width="160" height="44">
+		<texture_e>ui_button_ordinary_e</texture_e>
+		<texture_t>ui_button_ordinary_t</texture_t>
+		<texture_h>ui_button_ordinary_h</texture_h>
+		<text align="c" font="letterica18" r="230" g="230" b="230">--</text>
+	</item_4>
+	<item_5 x="540" y="92" width="150" height="44">
+		<texture_e>ui_button_ordinary_e</texture_e>
+		<texture_t>ui_button_ordinary_t</texture_t>
+		<texture_h>ui_button_ordinary_h</texture_h>
+		<text align="c" font="letterica18" r="230" g="230" b="230">--</text>
+	</item_5>
+
+	<item_6 x="200" y="144" width="160" height="44">
+		<texture_e>ui_button_ordinary_e</texture_e>
+		<texture_t>ui_button_ordinary_t</texture_t>
+		<texture_h>ui_button_ordinary_h</texture_h>
+		<text align="c" font="letterica18" r="230" g="230" b="230">--</text>
+	</item_6>
+	<item_7 x="370" y="144" width="160" height="44">
+		<texture_e>ui_button_ordinary_e</texture_e>
+		<texture_t>ui_button_ordinary_t</texture_t>
+		<texture_h>ui_button_ordinary_h</texture_h>
+		<text align="c" font="letterica18" r="230" g="230" b="230">--</text>
+	</item_7>
+	<item_8 x="540" y="144" width="150" height="44">
+		<texture_e>ui_button_ordinary_e</texture_e>
+		<texture_t>ui_button_ordinary_t</texture_t>
+		<texture_h>ui_button_ordinary_h</texture_h>
+		<text align="c" font="letterica18" r="230" g="230" b="230">--</text>
+	</item_8>
+
+	<item_9 x="200" y="196" width="160" height="44">
+		<texture_e>ui_button_ordinary_e</texture_e>
+		<texture_t>ui_button_ordinary_t</texture_t>
+		<texture_h>ui_button_ordinary_h</texture_h>
+		<text align="c" font="letterica18" r="230" g="230" b="230">--</text>
+	</item_9>
+
+	<!-- ============================================================ -->
+	<!-- Page info / status / hint                                     -->
+	<!-- ============================================================ -->
+	<page_info x="200" y="248" width="490" height="20">
+		<text align="l" font="letterica18" r="255" g="220" b="120">page 1/1</text>
+	</page_info>
+
+	<status_static x="10" y="270" width="680" height="22">
+		<text align="l" font="letterica18" r="200" g="200" b="200">Ready.</text>
+	</status_static>
+
+	<hint_static x="10" y="295" width="680" height="165">
+		<text align="l" font="letterica16" r="180" g="180" b="180">
+Hotkeys:
+  ESC / Close      - close spawner
+  Left / Right     - previous / next page
+  Click category   - switch category
+  Click item       - spawn
+
+Spawn rules:
+  Items (weapons, ammo, meds, artefacts) go to your inventory.
+  Ammo/grenades spawn in batches (count shown on the button).
+  Mutants and NPCs are spawned in world (toggle Target/Cluster below).
+
+Toggles (world spawn only):
+  Target: Actor  - spawn ~8m random offset from actor.
+  Target: Aim    - spawn at point where your crosshair/look ~25m.
+  Cluster: 1x    - one entity per click.
+  Cluster: 3x/5x - burst (cluster around target, angle random).
+		</text>
+	</hint_static>
+
+	<!-- ============================================================ -->
+	<!-- World-spawn toggles (above bottom nav, y=465)                -->
+	<!-- ============================================================ -->
+	<btn_target x="10" y="465" width="170" height="32">
+		<texture_e>ui_button_ordinary_e</texture_e>
+		<texture_t>ui_button_ordinary_t</texture_t>
+		<texture_h>ui_button_ordinary_h</texture_h>
+		<text align="c" font="graffiti19" r="220" g="220" b="220">Target: Actor</text>
+	</btn_target>
+	<btn_burst x="190" y="465" width="170" height="32">
+		<texture_e>ui_button_ordinary_e</texture_e>
+		<texture_t>ui_button_ordinary_t</texture_t>
+		<texture_h>ui_button_ordinary_h</texture_h>
+		<text align="c" font="graffiti19" r="220" g="220" b="220">Cluster: 1x</text>
+	</btn_burst>
+
+	<!-- ============================================================ -->
+	<!-- Navigation buttons (bottom row, y=510)                        -->
+	<!-- ============================================================ -->
+	<btn_prev x="10" y="510" width="170" height="32">
+		<texture_e>ui\ui_btn_mm_e</texture_e>
+		<texture_t>ui\ui_btn_mm_t</texture_t>
+		<texture_h>ui\ui_btn_mm_h</texture_h>
+		<text align="c" font="graffiti19" r="220" g="220" b="220">&lt; Prev</text>
+	</btn_prev>
+	<btn_next x="190" y="510" width="170" height="32">
+		<texture_e>ui\ui_btn_mm_e</texture_e>
+		<texture_t>ui\ui_btn_mm_t</texture_t>
+		<texture_h>ui\ui_btn_mm_h</texture_h>
+		<text align="c" font="graffiti19" r="220" g="220" b="220">Next &gt;</text>
+	</btn_next>
+	<btn_close x="540" y="510" width="150" height="32">
+		<texture_e>ui_button_ordinary_e</texture_e>
+		<texture_t>ui_button_ordinary_t</texture_t>
+		<texture_h>ui_button_ordinary_h</texture_h>
+		<text align="c" font="graffiti19" r="255" g="120" b="120">Close</text>
+	</btn_close>
+</spawner>

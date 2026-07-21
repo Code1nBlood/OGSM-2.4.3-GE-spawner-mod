@@ -1,0 +1,847 @@
+-- =====================================================================
+-- UI Spawner — OGSM 2.4 (S.T.A.L.K.E.R.: Shadow of Chernobyl 1.0006)
+-- Доступ из ESC-меню по F1 или кнопке "Спавнер"
+-- 10 категорий, страничная сетка предметов
+-- =====================================================================
+
+-- Конфигурация спавнера.
+-- kind: "inv" (по умолчанию) — предмет в инвентарь; "world" — существо в мир
+-- count: кол-во за раз (для ammo/гранат)
+local SPAWN_CFG = {
+    pistols = {
+        title = "Pistols",
+        items = {
+            {section="wpn_pm",           title="PM"},
+            {section="wpn_pb",           title="PB"},
+            {section="wpn_fort",         title="Fort-12"},
+            {section="wpn_hpsa",         title="HPSA"},
+            {section="wpn_beretta",      title="Beretta"},
+            {section="wpn_walther",      title="Walther P99"},
+            {section="wpn_sig220",       title="SIG-220"},
+            {section="wpn_colt1911",     title="Colt 1911"},
+            {section="wpn_usp",          title="USP"},
+            {section="wpn_desert_eagle", title="Desert Eagle"},
+        },
+    },
+    rifles = {
+        title = "Assault rifles / SMG",
+        items = {
+            {section="wpn_ak74u",        title="AK-74U"},
+            {section="wpn_ak74",         title="AK-74"},
+            {section="wpn_abakan",       title="Abakan"},
+            {section="wpn_mp5",          title="MP-5"},
+            {section="wpn_l85",          title="L85"},
+            {section="wpn_lr300",        title="LR-300"},
+            {section="wpn_sig550",       title="SIG-550"},
+            {section="wpn_groza",        title="Groza OC-14"},
+            {section="wpn_val",          title="VSS Vintorez"},
+            {section="wpn_vintorez",     title="Vintorez"},
+            {section="wpn_g36",          title="G36"},
+            {section="wpn_fn2000",       title="FN2000"},
+        },
+    },
+    snipers = {
+        title = "Sniper rifles",
+        items = {
+            {section="wpn_svd",   title="SVD"},
+            {section="wpn_svu",   title="SVU"},
+            {section="wpn_gauss", title="Gauss GP-37"},
+        },
+    },
+    shotguns = {
+        title = "Shotguns",
+        items = {
+            {section="wpn_bm16",            title="BM-16"},
+            {section="wpn_toz34",           title="TOZ-34"},
+            {section="wpn_wincheaster1300", title="Winchester 1300"},
+            {section="wpn_spas12",          title="SPAS-12"},
+        },
+    },
+    launchers = {
+        title = "Launchers / Grenades",
+        items = {
+            {section="wpn_rg-6",     title="RG-6 (underbarrel)", count=1},
+            {section="wpn_rpg7",     title="RPG-7",              count=1},
+            {section="grenade_f1",   title="Grenade F-1",        count=3},
+            {section="grenade_rgd5", title="Grenade RGD-5",      count=3},
+        },
+    },
+    ammo = {
+        title = "Ammo (60 shots)",
+        items = {
+            {section="ammo_9x18_fmj",       title="9x18 FMJ",      count=60},
+            {section="ammo_9x18_pmm",       title="9x18 PMM",      count=60},
+            {section="ammo_9x19_fmj",       title="9x19 FMJ",      count=60},
+            {section="ammo_9x19_pbp",       title="9x19 PBP",      count=60},
+            {section="ammo_11.43x23_fmj",   title=".45 ACP FMJ",   count=60},
+            {section="ammo_11.43x23_hydro", title=".45 ACP Hydro", count=60},
+            {section="ammo_5.45x39_fmj",    title="5.45 FMJ",      count=60},
+            {section="ammo_5.45x39_ap",     title="5.45 AP",       count=60},
+            {section="ammo_5.56x45_ss190",  title="5.56 SS190",    count=60},
+            {section="ammo_5.56x45_ap",     title="5.56 AP",       count=60},
+            {section="ammo_7.62x54_7h1",    title="7.62 7H1",      count=60},
+            {section="ammo_7.62x54_ap",     title="7.62 AP",       count=60},
+            {section="ammo_9x39_pab9",      title="9x39 PAB-9",    count=60},
+            {section="ammo_9x39_sp5",       title="9x39 SP-5",     count=60},
+            {section="ammo_9x39_ap",        title="9x39 AP",       count=60},
+            {section="ammo_12x70_buck",     title="12x70 Buck",    count=60},
+            {section="ammo_12x76_zhekan",   title="12x76 Zhekan",  count=60},
+            {section="ammo_12x76_dart",     title="12x76 Dart",    count=60},
+            {section="ammo_vog-25",         title="VOG-25",        count=10},
+            {section="ammo_vog-25p",        title="VOG-25P",       count=10},
+            {section="ammo_m209",           title="M209",          count=10},
+            {section="ammo_og-7b",          title="OG-7B",         count=5},
+            {section="ammo_gauss",          title="Gauss rounds",  count=20},
+        },
+    },
+    artefacts = {
+        title = "Artefacts",
+        items = {
+            {section="af_medusa",           title="Meduza"},
+            {section="af_cristall_flower",  title="Crystal Flower"},
+            {section="af_night_star",       title="Night Star"},
+            {section="af_vyvert",           title="Vyvert (Whirlwind)"},
+            {section="af_gravi",            title="Gravi"},
+            {section="af_gold_fish",        title="Goldfish"},
+            {section="af_blood_gel",        title="Blood Gel"},
+            {section="af_mincer_meat",      title="Mincer Meat"},
+            {section="af_electra_sparkler", title="Electra Spark"},
+            {section="af_electra_flash",    title="Electra Flash"},
+            {section="af_ice",              title="Ice"},
+            {section="af_thermal",          title="Thermal"},
+            {section="af_bubble",           title="Bubble"},
+            {section="af_rusty_thorn",      title="Rusty Thorn"},
+            {section="af_mercury_ball",     title="Mercury Ball"},
+        },
+    },
+    equipment = {
+        title = "Equipment / Meds / Outfits",
+        items = {
+            {section="medkit",                  title="Medkit"},
+            {section="medkit_army",             title="Army medkit"},
+            {section="medkit_scientic",         title="Scientific medkit"},
+            {section="bandage",                 title="Bandage"},
+            {section="antirad",                 title="Antirad"},
+            {section="drug_psy_blockade",       title="Psy-blockade"},
+            {section="drug_cocaine",            title="Drug: cocaine"},
+            {section="drug_fluor",              title="Drug: fluor"},
+            {section="vodka",                   title="Vodka"},
+            {section="energy_drink",            title="Energy drink"},
+            {section="bread",                   title="Bread"},
+            {section="kolbasa",                 title="Sausage"},
+            {section="conserva",                title="Canned food"},
+            {section="detector_simple",         title="Detector (Simp.)"},
+            {section="detector_advances",       title="Detector (Adv.)"},
+            {section="detector_elite",          title="Detector (Elite)"},
+            {section="device_torch",            title="Torch"},
+            {section="wpn_binoc",               title="Binoculars"},
+            -- Броня (все секции из outfit.ltx)
+            {section="novice_outfit",           title="Novice outfit"},
+            {section="stalker_outfit",          title="Stalker outfit"},
+            {section="bandit_outfit",           title="Bandit outfit"},
+            {section="bandit_master_outfit",    title="Bandit master outfit"},
+            {section="bandit_veteran_outfit",   title="Bandit veteran outfit"},
+            {section="dolg_outfit",             title="Dolg outfit"},
+            {section="dolg_scientific_outfit",  title="Dolg scientific"},
+            {section="freedom_scientific_outfit", title="Freedom scientific"},
+            {section="svoboda_light_outfit",    title="Svoboda light"},
+            {section="svoboda_heavy_outfit",    title="Svoboda heavy"},
+            {section="svoboda_exoskeleton",     title="Svoboda exoskeleton"},
+            {section="killer_outfit",           title="Killer outfit"},
+            {section="killer_blue_exoskeleton", title="Killer blue exo"},
+            {section="monolit_outfit",          title="Monolith outfit"},
+            {section="monolit_scientific_outfit", title="Monolith scientific"},
+            {section="monolit_exoskeleton",     title="Monolith exoskeleton"},
+            {section="military_outfit",         title="Military outfit"},
+            {section="military_stalker_commander_outfit", title="Army commander"},
+            {section="soldier_outfit",          title="Soldier outfit"},
+            {section="specops_outfit",          title="Specops outfit"},
+            {section="scientific_outfit",       title="Scientific outfit"},
+            {section="merc_scientific_outfit",  title="Merc scientific"},
+            {section="ecolog_outfit",           title="Ecologist outfit"},
+            {section="exo_outfit",              title="Exoskeleton"},
+            {section="broken_exoskeleton",      title="Broken exoskeleton"},
+            {section="dolg_black_exoskeleton",  title="Dolg black exo"},
+            {section="neytral_exo_antigas_outfit", title="Antigas exo"},
+            {section="protection_outfit",       title="Protection outfit"},
+            {section="without_outfit",          title="(no outfit)"},
+        },
+    },
+    mutants = {
+        title = "Mutants (verified sections only)",
+        kind  = "world",
+        -- Только секции из creatures/m_*.ltx. Отсутствующая секция = FATAL ERROR.
+        items = {
+            {section="dog_weak",                    title="Dog (weak)"},
+            {section="dog_normal",                  title="Dog (normal)"},
+            {section="dog_strong",                  title="Dog (strong)"},
+            {section="pseudodog_weak",              title="Pseudodog (weak)"},
+            {section="pseudodog_normal",            title="Pseudodog (normal)"},
+            {section="pseudodog_strong",            title="Pseudodog (strong)"},
+            {section="flesh_weak",                  title="Flesh (weak)"},
+            {section="flesh_normal",                title="Flesh (normal)"},
+            {section="flesh_strong",                title="Flesh (strong)"},
+            {section="snork_weak",                  title="Snork (weak)"},
+            {section="snork_normal",                title="Snork (normal)"},
+            {section="snork_strong",                title="Snork (strong)"},
+            {section="boar_weak",                   title="Boar (weak)"},
+            {section="boar_normal",                 title="Boar (normal)"},
+            {section="boar_strong",                 title="Boar (strong)"},
+            {section="zombie_weak",                 title="Zombie (weak)"},
+            {section="zombie_normal",               title="Zombie (normal)"},
+            {section="zombie_strong",               title="Zombie (strong)"},
+            {section="burer_weak",                  title="Burer (weak)"},
+            {section="burer_strong",                title="Burer (strong)"},
+            {section="bloodsucker_weak",            title="Bloodsucker (weak)"},
+            {section="bloodsucker_normal",          title="Bloodsucker (normal)"},
+            {section="bloodsucker_strong",          title="Bloodsucker (strong)"},
+            {section="controller_tubeman",          title="Controller (tubeman)"},
+            {section="m_controller_normal_fat",     title="Controller (fat)"},
+            {section="m_controller_old",            title="Controller (old man)"},
+            {section="m_controller_old_fat",        title="Controller (old fat)"},
+            {section="chimera_weak",                title="Chimera (weak)"},
+            {section="chimera_strong",              title="Chimera (strong)"},
+            {section="m_poltergeist_normal_tele",   title="Poltergeist (telekinesis)"},
+            {section="m_poltergeist_normal_flame",  title="Poltergeist (flame)"},
+            {section="m_poltergeist_strong_flame",  title="Poltergeist (strong flame)"},
+            {section="gigant_normal",               title="Pseudogigant (normal)"},
+            {section="gigant_strong",               title="Pseudogigant (strong)"},
+            {section="tushkano_normal",             title="Tushkano (normal)"},
+            {section="tushkano_weak",               title="Tushkano (weak)"},
+            {section="fracture_weak",               title="Fracture (weak)"},
+            {section="cat_weak",                    title="Cat (weak)"},
+        },
+    },
+    stalkers = {
+        title = "Stalkers / Factions (verified spawn_sections only)",
+        kind  = "world",
+        -- Только секции из spawn_sections.ltx. "sim_*" имена — character_profile
+        -- ссылки, а НЕ секции. Передача sim_* как section_name = FATAL ERROR.
+        items = {
+            {section="__random_stalker",            title="~ Random stalker ~"},
+            -- Торговцы
+            {section="esc_trader",                  title="Sid (Escape trader)"},
+            {section="agr_trader",                  title="Max (Agroprom trader)"},
+            {section="mil_trader",                  title="Mihail (Military trader)"},
+            {section="pri_trader",                  title="Prizrak (Pripyat trader)"},
+            -- Лонеры
+            {section="agr_stalker_regular",         title="Stalker (Agroprom)"},
+            {section="agr_stalker_veteran",         title="Stalker (Agroprom, vet.)"},
+            {section="esc_stalker_respawn_1",       title="Stalker (Escape, nov.)"},
+            {section="esc_stalker_respawn_2",       title="Stalker (Escape, reg.)"},
+            {section="ds_stalker_respawn_1",        title="Stalker (Darkscape, nov.)"},
+            {section="ds_stalker_respawn_2",        title="Stalker (Darkscape, reg.)"},
+            {section="bar_stalker_respawn_1",       title="Stalker (Bar, vet.)"},
+            {section="bar_stalker_respawn_2",       title="Stalker (Bar, master)"},
+            {section="bar_stalker_respawn_3",       title="Stalker (Bar, nov.)"},
+            {section="bar_stalker_respawn_4",       title="Stalker (Bar, reg.)"},
+            {section="gar_stalker_respawn_1",       title="Stalker (Garbage, nov.)"},
+            {section="gar_stalker_respawn_2",       title="Stalker (Garbage, reg.)"},
+            {section="mil_stalker_respawn_1",       title="Stalker (Military, reg.)"},
+            {section="mil_stalker_respawn_2",       title="Stalker (Military, vet.)"},
+            {section="mil_stalker_respawn_3",       title="Stalker (Military, master)"},
+            -- Долг
+            {section="dolg_regular",                title="Dolg (regular)"},
+            {section="bar_dolg_respawn_1",          title="Dolg (Bar, reg.)"},
+            {section="bar_dolg_respawn_2",          title="Dolg (Bar, vet.)"},
+            {section="bar_dolg_respawn_3",          title="Dolg (Bar, master)"},
+            {section="gar_dolg_respawn_1",          title="Dolg (Garbage, reg.)"},
+            {section="gar_dolg_respawn_2",          title="Dolg (Garbage, vet.)"},
+            -- Свобода
+            {section="mil_freedom_respawn_1",       title="Freedom (Mil., vet.)"},
+            {section="mil_freedom_respawn_2",       title="Freedom (Mil., reg.)"},
+            {section="mil_freedom_respawn_3",       title="Freedom (Mil., master)"},
+            {section="mil_freedom_respawn_sniper",  title="Freedom (Mil., sniper)"},
+            {section="rad_freedom_respawn_1",       title="Freedom (Radar, vet.)"},
+            {section="rad_freedom_respawn_2",       title="Freedom (Radar, reg.)"},
+            {section="rad_freedom_respawn_3",       title="Freedom (Radar, master)"},
+            {section="sim_freedom_master_quest",    title="Freedom (special quest)"},
+            -- Бандиты
+            {section="agr_bandit_respawn_1",        title="Bandits (Agroprom, nov.)"},
+            {section="agr_bandit_respawn_2",        title="Bandits (Agroprom, reg.)"},
+            {section="esc_bandit_respawn_1",        title="Bandits (Escape, nov.)"},
+            {section="esc_bandit_respawn_2",        title="Bandits (Escape, reg.)"},
+            {section="gar_bandit_respawn_1",        title="Bandits (Garbage, nov.)"},
+            {section="gar_bandit_respawn_2",        title="Bandits (Garbage, reg.)"},
+            {section="val_bandit_respawn_1",        title="Bandits (Dark Valley, nov.)"},
+            {section="val_bandit_respawn_2",        title="Bandits (Dark Valley, reg.)"},
+            {section="val_bandit_respawn_3",        title="Bandits (Dark Valley, vet.)"},
+            {section="val_bandit_respawn_4",        title="Bandits (Dark Valley, master)"},
+            {section="cit_bandit_respawn_1",        title="Bandits (Dead City, vet.)"},
+            {section="ros_bandit_respawn_3",        title="Bandits (Rostok, vet.)"},
+            -- Военные
+            {section="agr_soldier_regular",         title="Soldier (Agroprom, reg.)"},
+            {section="agr_soldier_veteran",         title="Soldier (Agroprom, vet.)"},
+            {section="esc_soldier_respawn_1",       title="Soldier (Escape, reg.)"},
+            {section="esc_soldier_respawn_specnaz", title="Soldier (Escape, specnaz)"},
+            {section="val_soldier_respawn_1",       title="Soldier (Dark Valley, specnaz)"},
+            {section="rad_specnaz_respawn_specnaz", title="Soldier (Radar, specnaz)"},
+            {section="rad_soldier_master",          title="Soldier (Radar, master)"},
+            {section="mil_neutral_barier_respawn_1", title="Stalker (Mil. barrier)"},
+            -- Киллеры
+            {section="mil_killer_respawn_1",        title="Killer (Mil. base, vet.)"},
+            {section="mil_killer_respawn_2",        title="Killer (Mil. base, sniper)"},
+            {section="mil_killer_respawn_3",        title="Killer (Mil. base, reg.)"},
+            {section="mil_killer_respawn_4",        title="Killer (Mil. base, master)"},
+            {section="cit_killer_respawn_1",        title="Killer (Dead City, reg.)"},
+            {section="cit_killer_respawn_2",        title="Killer (Dead City, vet.)"},
+            {section="cit_killer_respawn_3",        title="Killer (Dead City, master)"},
+            {section="ros_killer_respawn_1",        title="Killer (Rostok, vet.)"},
+            {section="ros_killer_respawn_2",        title="Killer (Rostok, sniper)"},
+            {section="ros_killer_respawn_3",        title="Killer (Rostok, reg.)"},
+            {section="ros_killer_respawn_4",        title="Killer (Rostok, master)"},
+            -- Монолит
+            {section="mil_monolit_rush_respawn_1", title="Monolith (Mil. rush)"},
+            {section="pri_monolith_respawn_1",     title="Monolith (Pripyat, reg.)"},
+            {section="pri_monolith_respawn_2",     title="Monolith (Pripyat, specnaz)"},
+            {section="pri_monolith_respawn_3",     title="Monolith (Pripyat, master)"},
+            {section="rad_monolith_respawn_1",     title="Monolith (Radar, reg.)"},
+            {section="rad_monolith_respawn_2",     title="Monolith (Radar, specnaz)"},
+            {section="rad_monolith_respawn_3",     title="Monolith (Radar, master)"},
+            {section="sar_monolith_respawn",       title="Monolith (Sarcophagus)"},
+            -- Зомби
+            {section="rad_zombied_respawn_1",      title="Zombied (Radar, nov.)"},
+            {section="rad_zombied_respawn_2",      title="Zombied (Radar, vet.)"},
+            {section="rad_zombied_respawn_3",      title="Zombied (Radar, master)"},
+            {section="yan_zombied_respawn_1",      title="Zombied (Yantar, nov.)"},
+            {section="yan_zombied_respawn_2",      title="Zombied (Yantar, vet.)"},
+            {section="yan_zombied_respawn_3",      title="Zombied (Yantar, master)"},
+            -- Экологи
+            {section="yan_ecolog_respawn_1",       title="Ecologist (Yantar)"},
+            -- Барьерные посты
+            {section="mil_freedom_barier_respawn_1", title="Freedom (barrier post)"},
+            {section="bar_arena_respawner",         title="Bandit (Arena respawner)"},
+        },
+    },
+}
+
+-- Порядок категорий в левой колонке
+local CAT_ORDER = {"pistols","rifles","snipers","shotguns","launchers",
+                   "ammo","artefacts","equipment","mutants","stalkers"}
+
+-- Пул секций для "Random stalker" кнопки (respawn-секции с определённой community)
+local RANDOM_STALKER_POOL = {
+    "agr_stalker_regular",   "agr_stalker_veteran",
+    "esc_stalker_respawn_1", "esc_stalker_respawn_2",
+    "bar_stalker_respawn_1", "bar_stalker_respawn_4",
+    "mil_stalker_respawn_1", "mil_stalker_respawn_3",
+    "gar_stalker_respawn_1", "gar_stalker_respawn_2",
+    "ros_bandit_respawn_3",  "cit_bandit_respawn_1",
+    "esc_soldier_respawn_specnaz",
+}
+
+local ITEMS_PER_PAGE = 10
+
+class "spawner_dialog" (CUIScriptWnd)
+
+function spawner_dialog:__init(owner) super()
+    self.owner       = owner
+    self.cur_cat     = 1
+    self.cur_page    = 0
+    -- target_mode: "actor" (рядом) | "aim" (по прицелу ~25м)
+    -- burst_count: 1 | 3 | 5 (только для world-kind)
+    self.target_mode = "actor"
+    self.burst_count = 1
+    self:InitControls()
+    self:InitCallBacks()
+    self:SelectCategory(self.cur_cat)
+end
+
+function spawner_dialog:__finalize() end
+
+function spawner_dialog:InitControls()
+    -- Окно 700x580, центрировано на 1024x768
+    self:Init(162, 100, 700, 580)
+
+    local xml = CScriptXmlInit()
+    xml:ParseFile("ui_spawner_wnd.xml")
+
+    xml:InitStatic("background",   self)
+    self.caption_st   = xml:InitStatic("caption",      self)
+    self.page_st      = xml:InitStatic("page_info",    self)
+    self.status_st    = xml:InitStatic("status_static",self)
+    self.hint_st      = xml:InitStatic("hint_static",  self)
+
+    -- 10 кнопок категорий (слева)
+    self.btn_cat = {}
+    for i = 1, #CAT_ORDER do
+        local b = xml:Init3tButton("cat_"..(i-1), self)
+        self:Register(b, "cat_"..i)
+        self.btn_cat[i] = b
+    end
+
+    -- 10 кнопок предметов на странице (сетка 3x4, 2 последних пустых слота)
+    self.btn_item = {}
+    for i = 1, ITEMS_PER_PAGE do
+        local b = xml:Init3tButton("item_"..(i-1), self)
+        self:Register(b, "item_"..i)
+        self.btn_item[i] = b
+    end
+
+    -- Пагинация и закрытие
+    self.btn_prev  = xml:Init3tButton("btn_prev",  self)
+    self.btn_next  = xml:Init3tButton("btn_next",  self)
+    self.btn_close = xml:Init3tButton("btn_close", self)
+    self:Register(self.btn_prev,  "btn_prev")
+    self:Register(self.btn_next,  "btn_next")
+    self:Register(self.btn_close, "btn_close")
+
+    -- Кнопки-world toggles
+    self.btn_target = xml:Init3tButton("btn_target", self)
+    self.btn_burst  = xml:Init3tButton("btn_burst",  self)
+    self:Register(self.btn_target, "btn_target")
+    self:Register(self.btn_burst,  "btn_burst")
+    self:UpdateToggleButtons()
+
+    self:SetStatus("Ready. Press a category, then an item.")
+end
+
+-- Обновляет текст toggle-кнопок по текущему состоянию
+function spawner_dialog:UpdateToggleButtons()
+    if self.btn_target then
+        self.btn_target:SetText((self.target_mode == "aim")
+            and "Target: Aim (crosshair)"
+            or  "Target: Actor (near)")
+    end
+    if self.btn_burst then
+        self.btn_burst:SetText(string.format("Cluster: %dx", self.burst_count))
+    end
+end
+
+-- Переключение Aim <-> Actor
+function spawner_dialog:OnToggleTarget()
+    self.target_mode = (self.target_mode == "aim") and "actor" or "aim"
+    self:UpdateToggleButtons()
+    self:SetStatus("Target mode: " .. self.target_mode)
+end
+
+-- Цикл burst: 1 -> 3 -> 5 -> 1
+function spawner_dialog:OnToggleBurst()
+    local cycle = {1, 3, 5}
+    local idx = 1
+    for i, v in ipairs(cycle) do
+        if v == self.burst_count then idx = (i % #cycle) + 1; break end
+    end
+    self.burst_count = cycle[idx]
+    self:UpdateToggleButtons()
+    self:SetStatus(string.format("Cluster: %dx per click", self.burst_count))
+end
+
+function spawner_dialog:InitCallBacks()
+    for i = 1, #CAT_ORDER do
+        local idx = i
+        self["fn_cat_"..i] = function(self2) self2:SelectCategory(idx) end
+        self:AddCallback("cat_"..i, ui_events.BUTTON_CLICKED, self["fn_cat_"..i], self)
+    end
+    for i = 1, ITEMS_PER_PAGE do
+        local idx = i
+        self["fn_item_"..i] = function(self2) self2:ClickItem(idx) end
+        self:AddCallback("item_"..i, ui_events.BUTTON_CLICKED, self["fn_item_"..i], self)
+    end
+    self:AddCallback("btn_prev",  ui_events.BUTTON_CLICKED, self.OnPrevPage, self)
+    self:AddCallback("btn_next",  ui_events.BUTTON_CLICKED, self.OnNextPage, self)
+    self:AddCallback("btn_close", ui_events.BUTTON_CLICKED, self.OnClose,    self)
+    self:AddCallback("btn_target", ui_events.BUTTON_CLICKED, self.OnToggleTarget, self)
+    self:AddCallback("btn_burst",  ui_events.BUTTON_CLICKED, self.OnToggleBurst,  self)
+end
+
+function spawner_dialog:SetStatus(text)
+    if self.status_st then self.status_st:SetText(text) end
+end
+
+function spawner_dialog:SelectCategory(idx)
+    if idx < 1 or idx > #CAT_ORDER then return end
+    self.cur_cat = idx
+    self.cur_page = 0
+    -- Активная категория выключена (серый), остальные доступны
+    for i = 1, #CAT_ORDER do
+        local key = CAT_ORDER[i]
+        local cat = SPAWN_CFG[key]
+        if self.btn_cat[i] and cat then
+            self.btn_cat[i]:SetText(cat.title)
+            self.btn_cat[i]:Enable(i ~= idx)
+        end
+    end
+    self:RefreshItems()
+end
+
+function spawner_dialog:GetCurrentItems()
+    local key = CAT_ORDER[self.cur_cat]
+    return SPAWN_CFG[key] and SPAWN_CFG[key].items or {}
+end
+
+function spawner_dialog:GetCurrentKind()
+    local key = CAT_ORDER[self.cur_cat]
+    local cat = SPAWN_CFG[key]
+    return (cat and cat.kind) or "inv"
+end
+
+function spawner_dialog:PageCount()
+    local items = self:GetCurrentItems()
+    local n = #items
+    if n == 0 then return 1 end
+    return math.max(1, math.ceil(n / ITEMS_PER_PAGE))
+end
+
+function spawner_dialog:RefreshItems()
+    local items = self:GetCurrentItems()
+    local total_pages = math.max(1, math.ceil(#items / ITEMS_PER_PAGE))
+    if self.cur_page >= total_pages then self.cur_page = total_pages - 1 end
+    if self.cur_page < 0 then self.cur_page = 0 end
+
+    local start = self.cur_page * ITEMS_PER_PAGE
+    for i = 1, ITEMS_PER_PAGE do
+        local itm = items[start + i]
+        local btn = self.btn_item[i]
+        if itm then
+            local label = itm.title
+            if itm.count and itm.count > 0 then
+                label = label .. " (x" .. itm.count .. ")"
+            end
+            btn:SetText(label)
+            btn:Enable(true)
+        else
+            btn:SetText("--")
+            btn:Enable(false)
+        end
+    end
+
+    local kind_label = (self:GetCurrentKind() == "world") and " (world)" or " (inventory)"
+    self.page_st:SetText(string.format("%s%s  -  page %d/%d",
+        SPAWN_CFG[CAT_ORDER[self.cur_cat]].title, kind_label,
+        self.cur_page + 1, total_pages))
+
+    self.btn_prev:Enable(self.cur_page > 0)
+    self.btn_next:Enable(self.cur_page + 1 < total_pages)
+end
+
+function spawner_dialog:OnPrevPage()
+    if self.cur_page > 0 then
+        self.cur_page = self.cur_page - 1
+        self:RefreshItems()
+    end
+end
+
+function spawner_dialog:OnNextPage()
+    if self.cur_page + 1 < self:PageCount() then
+        self.cur_page = self.cur_page + 1
+        self:RefreshItems()
+    end
+end
+
+function spawner_dialog:OnClose()
+    self:CloseSpawner()
+end
+
+-- Закрытие спавнера: сброс singleton + возврат в ESC-меню/игру
+function spawner_dialog:CloseSpawner()
+    if self.owner and self.owner.spawner_wnd == self then
+        self.owner.spawner_wnd = nil
+    end
+
+    local holder = self:GetHolder()
+    if holder == nil then return end
+    if self.owner and self.owner:IsShown() then
+        holder:start_stop_menu(self.owner, true)
+        holder:start_stop_menu(self, true)
+        if self.owner.Show then self.owner:Show(true) end
+    else
+        holder:start_stop_menu(self, true)
+    end
+    -- Выход из ESC-меню в игру (только если актор жив)
+    local console = get_console()
+    if level.present() and (db.actor ~= nil) and db.actor:alive() then
+        console:execute("main_menu off")
+    end
+end
+
+function spawner_dialog:OnKeyboard(dik, keyboard_action)
+    CUIScriptWnd.OnKeyboard(self, dik, keyboard_action)
+    if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+        if dik == DIK_keys.DIK_ESCAPE then
+            self:CloseSpawner()
+        elseif dik == DIK_keys.DIK_LEFT then
+            self:OnPrevPage()
+        elseif dik == DIK_keys.DIK_RIGHT then
+            self:OnNextPage()
+        end
+    end
+    return true
+end
+
+-- === Логика спавна ===============================================
+
+-- Случайный сталкер из RANDOM_STALKER_POOL
+function spawner_dialog:SpawnRandomStalker()
+    local n = #RANDOM_STALKER_POOL
+    if n == 0 then return 0, false end
+    local sec = RANDOM_STALKER_POOL[math.random(1, n)]
+    return self:SpawnInWorld(sec, {
+        target_mode = self.target_mode,
+        burst_count = self.burst_count,
+    })
+end
+
+-- Спавн существа (мутант/NPC) в мире.
+-- target_mode: "actor" — ~8м от ГГ; "aim" — по лучу прицела
+-- burst_count: 1/3/5 — кол-во экземпляров, разнесённых по кругу
+function spawner_dialog:SpawnInWorld(section, opts)
+    opts        = opts or {}
+    local a     = db.actor
+    if a == nil then
+        self:SetStatus("No actor.")
+        return false
+    end
+    local burst = math.max(1, math.floor(opts.burst_count or self.burst_count or 1))
+    burst       = math.min(burst, 5)
+    local tmode = opts.target_mode or self.target_mode or "actor"
+
+    -- 1) Центр группы
+    local center_lvid = a:level_vertex_id()
+    local center_pos  = a:position()
+    local center_gvid = a:game_vertex_id()
+
+    if tmode == "aim" then
+        -- Получение направления камеры. Пробуем несколько вариантов,
+        -- т.к. в retail SoC 1.0006 часть binding'ов отключена.
+        local dir
+        local cd_ok = pcall(function() dir = device and device():cam_dir() end)
+        if (not cd_ok or dir == nil) then
+            cd_ok = pcall(function() dir = device and device.cam_dir end)
+        end
+        if (not cd_ok or dir == nil) then
+            cd_ok = pcall(function() dir = device and device:cam_dir() end)
+        end
+        if (not cd_ok or dir == nil) then
+            cd_ok = pcall(function() dir = db.actor:direction() end)
+        end
+        if (not cd_ok or dir == nil) then
+            cd_ok = pcall(function() dir = db.actor.cam_dir end)
+        end
+        if (not cd_ok or dir == nil) then
+            cd_ok = pcall(function() dir = db.actor:cam_dir() end)
+        end
+        if cd_ok and dir ~= nil then
+            local mag = (dir.x or 0) * (dir.x or 0)
+                      + (dir.y or 0) * (dir.y or 0)
+                      + (dir.z or 0) * (dir.z or 0)
+            if mag < 0.0001 then dir = nil end
+        end
+
+        if dir ~= nil then
+            -- Primary: 15 м (типичная дальность прицела SoC)
+            local aim_lvid
+            local lv = level.vertex_in_direction(center_lvid, dir, 15.0)
+            if lv ~= nil and lv < 65535 then
+                aim_lvid = lv
+            else
+                -- Фоллбэк: ближе/дальше если primary уперся в стену
+                for _, d in ipairs({5, 20, 25}) do
+                    lv = level.vertex_in_direction(center_lvid, dir, d)
+                    if lv ~= nil and lv < 65535 then
+                        aim_lvid = lv
+                        break
+                    end
+                end
+                if aim_lvid == nil then
+                    self:SetStatus("Aim cast failed, fallback to actor pos")
+                end
+            end
+            if aim_lvid ~= nil then
+                center_lvid = aim_lvid
+                center_pos  = level.vertex_position(aim_lvid)
+                local new_gvid
+                local gv_ok = pcall(function()
+                    new_gvid = level.game_vertex_id(aim_lvid)
+                end)
+                if (not gv_ok or new_gvid == nil or new_gvid >= 65535) then
+                    gv_ok = pcall(function()
+                        new_gvid = level.vertex_id_to_game_vertex_id(aim_lvid)
+                    end)
+                end
+                if gv_ok and new_gvid ~= nil and new_gvid < 65535 then
+                    center_gvid = new_gvid
+                end
+            end
+        else
+            self:SetStatus("Aim mode: cam_dir unavailable, fallback to actor pos")
+        end
+    end
+
+    -- 2) Burst-цикл: i=1 в center, остальные разносятся по кругу
+    local spawned = 0
+    local last_err = nil
+    for i = 1, burst do
+        local lvid
+        if i == 1 then
+            lvid = center_lvid
+        else
+            -- Multi-step retry: 5 попыток с разными углами/радиусами.
+            -- Граф уровня разреженный (шаг 10-30м), малые радиусы дают
+            -- ту же вершину — burst-сущности стэкаются в одну точку.
+            local lvid_ok = nil
+            for retry = 0, 4 do
+                local ang = math.random() * math.pi * 2.0
+                local r_lo, r_hi
+                if retry == 0 then
+                    r_lo, r_hi = 10, 18  -- большой радиус
+                else
+                    r_lo, r_hi = 4, 8    -- меньший радиус
+                end
+                local r = math.random(r_lo, r_hi)
+                local bdir = vector():set(math.cos(ang), 0.0001, math.sin(ang))
+                local lv = level.vertex_in_direction(center_lvid, bdir, r)
+                if lv ~= nil and lv < 65535 and lv ~= center_lvid then
+                    lvid_ok = lv
+                    break
+                end
+            end
+            if lvid_ok ~= nil then
+                lvid = lvid_ok
+            else
+                lvid = center_lvid
+                self:SetStatus(string.format(
+                    "Burst #%d stacked on center (tight indoor)", i))
+            end
+        end
+        local pos = level.vertex_position(lvid)
+
+        -- alife():create() возвращает NUMBER (id), а не server object
+        local id
+        local pok, perr = pcall(function()
+            id = alife():create(section, pos, lvid, center_gvid)
+        end)
+        if not pok then
+            last_err = tostring(perr or "create() failed")
+        elseif id ~= nil then
+            -- sobj.position/lvid/gvid — READ-ONLY в SoC 1.0006, запись = crash
+            spawned = spawned + 1
+            pcall(wait) -- anti-coalescing между alife():create
+        else
+            last_err = "create() returned nil"
+        end
+    end
+
+    if last_err ~= nil then
+        printf("[OGSM spawner] burst error: %s (spawned %d/%d)", last_err, spawned, burst)
+        if spawned > 0 and spawned < burst then
+            self:SetStatus(string.format(
+                "Burst partial: %d/%d spawned (%s)",
+                spawned, burst, last_err))
+        end
+    end
+
+    if spawned == 0 then
+        self:SetStatus("Spawn returned nil: " .. tostring(section))
+        return 0, false
+    end
+    return spawned, true
+end
+
+-- Спавн предмета в инвентарь ГГ.
+-- Ammo: spawn_ammo_in_inv (упаковывает N патронов в один объект).
+-- Прочее: N отдельных spawn_item_in_inv.
+-- Fallback: alife():create с parent = actor id.
+function spawner_dialog:SpawnInInventory(section, count)
+    local a = db.actor
+    if a == nil then return false end
+
+    if count and count > 1 then
+        local n = math.floor(count)
+        local is_ammo = (section:sub(1, 5) == "ammo_")
+        if is_ammo and amk and amk.spawn_ammo_in_inv then
+            local r = amk.spawn_ammo_in_inv(section, n, a)
+            return (r ~= nil) and (r ~= false)
+        end
+        if amk and amk.spawn_item_in_inv then
+            local ok = true
+            for j = 1, n do
+                local r = amk.spawn_item_in_inv(section, a)
+                if r == nil or r == false then ok = false end
+            end
+            return ok
+        end
+    end
+
+    if amk and amk.spawn_item_in_inv then
+        local r = amk.spawn_item_in_inv(section, a)
+        return (r ~= nil) and (r ~= false)
+    end
+
+    -- Fallback: alife():create с parent = actor
+    local id = alife():create(section, a:position(), a:level_vertex_id(), a:game_vertex_id(), a:id())
+    return id ~= nil and id ~= 0
+end
+
+function spawner_dialog:NotifyHUD(msg)
+    if news_manager and news_manager.send_tip and db.actor then
+        news_manager.send_tip(db.actor, "[OGSM] " .. msg, nil, nil, 4)
+    end
+end
+
+function spawner_dialog:ClickItem(slot)
+    local items = self:GetCurrentItems()
+    local idx = self.cur_page * ITEMS_PER_PAGE + slot
+    local entry = items[idx]
+    if entry == nil then
+        self:SetStatus("Empty slot.")
+        return
+    end
+
+    local kind = self:GetCurrentKind()
+    local title = entry.title or entry.section
+
+    if kind == "world" then
+        local got, ok
+        if entry.section == "__random_stalker" then
+            got, ok = self:SpawnRandomStalker()
+            if ok then
+                local msg
+                if got and got > 1 then
+                    msg = string.format("Random stalker %d/%d at %s",
+                        got, self.burst_count, self.target_mode)
+                else
+                    msg = "Random stalker spawned at " .. self.target_mode
+                end
+                self:SetStatus(msg)
+                self:NotifyHUD(msg)
+            else
+                self:SetStatus("Failed to spawn random stalker")
+                self:NotifyHUD("Random stalker FAILED")
+            end
+        else
+            got, ok = self:SpawnInWorld(entry.section, {
+                target_mode = self.target_mode,
+                burst_count = self.burst_count,
+            })
+            if ok then
+                local msg
+                if got and got > 1 then
+                    msg = string.format("Spawned %d/%d at %s: %s",
+                        got, self.burst_count, self.target_mode, title)
+                else
+                    msg = string.format("Spawned at %s: %s",
+                        self.target_mode, title)
+                end
+                self:SetStatus(msg)
+                self:NotifyHUD(msg)
+            else
+                self:SetStatus("Failed to spawn: " .. title)
+                self:NotifyHUD("Spawn FAILED: " .. title)
+            end
+        end
+    else
+        local ok = self:SpawnInInventory(entry.section, entry.count)
+        local note
+        if ok then
+            note = (entry.count and entry.count > 0)
+                and (title .. " x" .. entry.count)
+                or  title
+            self:SetStatus("Added to inventory: " .. note)
+            self:NotifyHUD("Added: " .. note)
+        else
+            self:SetStatus("Failed to spawn: " .. title)
+            self:NotifyHUD("Spawn FAILED: " .. title)
+        end
+    end
+end
