@@ -1,12 +1,12 @@
 -- =====================================================================
--- UI Spawner вЂ” OGSM 2.4 (S.T.A.L.K.E.R.: Shadow of Chernobyl 1.0006)
--- Р”РѕСЃС‚СѓРї РёР· ESC-РјРµРЅСЋ РїРѕ F1 РёР»Рё РєРЅРѕРїРєРµ "РЎРїР°РІРЅРµСЂ"
--- 10 РєР°С‚РµРіРѕСЂРёР№, СЃС‚СЂР°РЅРёС‡РЅР°СЏ СЃРµС‚РєР° РїСЂРµРґРјРµС‚РѕРІ
+-- UI Spawner — OGSM 2.4 (S.T.A.L.K.E.R.: Shadow of Chernobyl 1.0006)
+-- Доступ из ESC-меню по F1 или кнопке "Спавнер"
+-- 10 категорий, страничная сетка предметов
 -- =====================================================================
 
--- РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ СЃРїР°РІРЅРµСЂР°.
--- kind: "inv" (РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ) вЂ” РїСЂРµРґРјРµС‚ РІ РёРЅРІРµРЅС‚Р°СЂСЊ; "world" вЂ” СЃСѓС‰РµСЃС‚РІРѕ РІ РјРёСЂ
--- count: РєРѕР»-РІРѕ Р·Р° СЂР°Р· (РґР»СЏ ammo/РіСЂР°РЅР°С‚)
+-- Конфигурация спавнера.
+-- kind: "inv" (по умолчанию) — предмет в инвентарь; "world" — существо в мир
+-- count: кол-во за раз (для ammo/гранат)
 local SPAWN_CFG = {
     pistols = {
         title = "Pistols",
@@ -103,15 +103,15 @@ local SPAWN_CFG = {
             {section="af_vyvert",           title="Vyvert (Whirlwind)"},
             {section="af_gravi",            title="Gravi"},
             {section="af_gold_fish",        title="Goldfish"},
-            {section="af_blood_gel",        title="Blood Gel"},
+            {section="af_blood",            title="Blood"},
             {section="af_mincer_meat",      title="Mincer Meat"},
             {section="af_electra_sparkler", title="Electra Spark"},
             {section="af_electra_flash",    title="Electra Flash"},
-            {section="af_ice",              title="Ice"},
-            {section="af_thermal",          title="Thermal"},
-            {section="af_bubble",           title="Bubble"},
-            {section="af_rusty_thorn",      title="Rusty Thorn"},
-            {section="af_mercury_ball",     title="Mercury Ball"},
+            {section="af_cristall",         title="Crystal (выводит радиацию)"},
+            {section="af_fireball",         title="Fireball (выводит радиацию)"},
+            {section="af_drops",            title="Droplets (выводит радиацию)"},
+            {section="af_rusty_thorn",      title="Rusty Thorn (выводит радиацию)"},
+            {section="af_rusty_sea-urchin", title="Sea Urchin (выводит радиацию)"},
         },
     },
     equipment = {
@@ -135,7 +135,7 @@ local SPAWN_CFG = {
             {section="detector_elite",          title="Detector (Elite)"},
             {section="device_torch",            title="Torch"},
             {section="wpn_binoc",               title="Binoculars"},
-            -- Р‘СЂРѕРЅСЏ (РІСЃРµ СЃРµРєС†РёРё РёР· outfit.ltx)
+            -- Броня (все секции из outfit.ltx)
             {section="novice_outfit",           title="Novice outfit"},
             {section="stalker_outfit",          title="Stalker outfit"},
             {section="bandit_outfit",           title="Bandit outfit"},
@@ -170,7 +170,7 @@ local SPAWN_CFG = {
     mutants = {
         title = "Mutants (verified sections only)",
         kind  = "world",
-        -- РўРѕР»СЊРєРѕ СЃРµРєС†РёРё РёР· creatures/m_*.ltx. РћС‚СЃСѓС‚СЃС‚РІСѓСЋС‰Р°СЏ СЃРµРєС†РёСЏ = FATAL ERROR.
+        -- Только секции из creatures/m_*.ltx. Отсутствующая секция = FATAL ERROR.
         items = {
             {section="dog_weak",                    title="Dog (weak)"},
             {section="dog_normal",                  title="Dog (normal)"},
@@ -215,16 +215,16 @@ local SPAWN_CFG = {
     stalkers = {
         title = "Stalkers / Factions (verified spawn_sections only)",
         kind  = "world",
-        -- РўРѕР»СЊРєРѕ СЃРµРєС†РёРё РёР· spawn_sections.ltx. "sim_*" РёРјРµРЅР° вЂ” character_profile
-        -- СЃСЃС‹Р»РєРё, Р° РќР• СЃРµРєС†РёРё. РџРµСЂРµРґР°С‡Р° sim_* РєР°Рє section_name = FATAL ERROR.
+        -- Только секции из spawn_sections.ltx. "sim_*" имена — character_profile
+        -- ссылки, а НЕ секции. Передача sim_* как section_name = FATAL ERROR.
         items = {
             {section="__random_stalker",            title="~ Random stalker ~"},
-            -- РўРѕСЂРіРѕРІС†С‹
+            -- Торговцы
             {section="esc_trader",                  title="Sid (Escape trader)"},
             {section="agr_trader",                  title="Max (Agroprom trader)"},
             {section="mil_trader",                  title="Mihail (Military trader)"},
             {section="pri_trader",                  title="Prizrak (Pripyat trader)"},
-            -- Р›РѕРЅРµСЂС‹
+            -- Лонеры
             {section="agr_stalker_regular",         title="Stalker (Agroprom)"},
             {section="agr_stalker_veteran",         title="Stalker (Agroprom, vet.)"},
             {section="esc_stalker_respawn_1",       title="Stalker (Escape, nov.)"},
@@ -240,14 +240,14 @@ local SPAWN_CFG = {
             {section="mil_stalker_respawn_1",       title="Stalker (Military, reg.)"},
             {section="mil_stalker_respawn_2",       title="Stalker (Military, vet.)"},
             {section="mil_stalker_respawn_3",       title="Stalker (Military, master)"},
-            -- Р”РѕР»Рі
+            -- Долг
             {section="dolg_regular",                title="Dolg (regular)"},
             {section="bar_dolg_respawn_1",          title="Dolg (Bar, reg.)"},
             {section="bar_dolg_respawn_2",          title="Dolg (Bar, vet.)"},
             {section="bar_dolg_respawn_3",          title="Dolg (Bar, master)"},
             {section="gar_dolg_respawn_1",          title="Dolg (Garbage, reg.)"},
             {section="gar_dolg_respawn_2",          title="Dolg (Garbage, vet.)"},
-            -- РЎРІРѕР±РѕРґР°
+            -- Свобода
             {section="mil_freedom_respawn_1",       title="Freedom (Mil., vet.)"},
             {section="mil_freedom_respawn_2",       title="Freedom (Mil., reg.)"},
             {section="mil_freedom_respawn_3",       title="Freedom (Mil., master)"},
@@ -256,7 +256,7 @@ local SPAWN_CFG = {
             {section="rad_freedom_respawn_2",       title="Freedom (Radar, reg.)"},
             {section="rad_freedom_respawn_3",       title="Freedom (Radar, master)"},
             {section="sim_freedom_master_quest",    title="Freedom (special quest)"},
-            -- Р‘Р°РЅРґРёС‚С‹
+            -- Бандиты
             {section="agr_bandit_respawn_1",        title="Bandits (Agroprom, nov.)"},
             {section="agr_bandit_respawn_2",        title="Bandits (Agroprom, reg.)"},
             {section="esc_bandit_respawn_1",        title="Bandits (Escape, nov.)"},
@@ -269,7 +269,7 @@ local SPAWN_CFG = {
             {section="val_bandit_respawn_4",        title="Bandits (Dark Valley, master)"},
             {section="cit_bandit_respawn_1",        title="Bandits (Dead City, vet.)"},
             {section="ros_bandit_respawn_3",        title="Bandits (Rostok, vet.)"},
-            -- Р’РѕРµРЅРЅС‹Рµ
+            -- Военные
             {section="agr_soldier_regular",         title="Soldier (Agroprom, reg.)"},
             {section="agr_soldier_veteran",         title="Soldier (Agroprom, vet.)"},
             {section="esc_soldier_respawn_1",       title="Soldier (Escape, reg.)"},
@@ -278,7 +278,7 @@ local SPAWN_CFG = {
             {section="rad_specnaz_respawn_specnaz", title="Soldier (Radar, specnaz)"},
             {section="rad_soldier_master",          title="Soldier (Radar, master)"},
             {section="mil_neutral_barier_respawn_1", title="Stalker (Mil. barrier)"},
-            -- РљРёР»Р»РµСЂС‹
+            -- Киллеры
             {section="mil_killer_respawn_1",        title="Killer (Mil. base, vet.)"},
             {section="mil_killer_respawn_2",        title="Killer (Mil. base, sniper)"},
             {section="mil_killer_respawn_3",        title="Killer (Mil. base, reg.)"},
@@ -290,7 +290,7 @@ local SPAWN_CFG = {
             {section="ros_killer_respawn_2",        title="Killer (Rostok, sniper)"},
             {section="ros_killer_respawn_3",        title="Killer (Rostok, reg.)"},
             {section="ros_killer_respawn_4",        title="Killer (Rostok, master)"},
-            -- РњРѕРЅРѕР»РёС‚
+            -- Монолит
             {section="mil_monolit_rush_respawn_1", title="Monolith (Mil. rush)"},
             {section="pri_monolith_respawn_1",     title="Monolith (Pripyat, reg.)"},
             {section="pri_monolith_respawn_2",     title="Monolith (Pripyat, specnaz)"},
@@ -299,27 +299,27 @@ local SPAWN_CFG = {
             {section="rad_monolith_respawn_2",     title="Monolith (Radar, specnaz)"},
             {section="rad_monolith_respawn_3",     title="Monolith (Radar, master)"},
             {section="sar_monolith_respawn",       title="Monolith (Sarcophagus)"},
-            -- Р—РѕРјР±Рё
+            -- Зомби
             {section="rad_zombied_respawn_1",      title="Zombied (Radar, nov.)"},
             {section="rad_zombied_respawn_2",      title="Zombied (Radar, vet.)"},
             {section="rad_zombied_respawn_3",      title="Zombied (Radar, master)"},
             {section="yan_zombied_respawn_1",      title="Zombied (Yantar, nov.)"},
             {section="yan_zombied_respawn_2",      title="Zombied (Yantar, vet.)"},
             {section="yan_zombied_respawn_3",      title="Zombied (Yantar, master)"},
-            -- Р­РєРѕР»РѕРіРё
+            -- Экологи
             {section="yan_ecolog_respawn_1",       title="Ecologist (Yantar)"},
-            -- Р‘Р°СЂСЊРµСЂРЅС‹Рµ РїРѕСЃС‚С‹
+            -- Барьерные посты
             {section="mil_freedom_barier_respawn_1", title="Freedom (barrier post)"},
             {section="bar_arena_respawner",         title="Bandit (Arena respawner)"},
         },
     },
 }
 
--- РџРѕСЂСЏРґРѕРє РєР°С‚РµРіРѕСЂРёР№ РІ Р»РµРІРѕР№ РєРѕР»РѕРЅРєРµ
+-- Порядок категорий в левой колонке
 local CAT_ORDER = {"pistols","rifles","snipers","shotguns","launchers",
                    "ammo","artefacts","equipment","mutants","stalkers"}
 
--- РџСѓР» СЃРµРєС†РёР№ РґР»СЏ "Random stalker" РєРЅРѕРїРєРё (respawn-СЃРµРєС†РёРё СЃ РѕРїСЂРµРґРµР»С‘РЅРЅРѕР№ community)
+-- Пул секций для "Random stalker" кнопки (respawn-секции с определённой community)
 local RANDOM_STALKER_POOL = {
     "agr_stalker_regular",   "agr_stalker_veteran",
     "esc_stalker_respawn_1", "esc_stalker_respawn_2",
@@ -338,8 +338,8 @@ function spawner_dialog:__init(owner) super()
     self.owner       = owner
     self.cur_cat     = 1
     self.cur_page    = 0
-    -- target_mode: "actor" (СЂСЏРґРѕРј) | "aim" (РїРѕ РїСЂРёС†РµР»Сѓ ~25Рј)
-    -- burst_count: 1 | 3 | 5 (С‚РѕР»СЊРєРѕ РґР»СЏ world-kind)
+    -- target_mode: "actor" (рядом) | "aim" (по прицелу ~25м)
+    -- burst_count: 1 | 3 | 5 (только для world-kind)
     self.target_mode = "actor"
     self.burst_count = 1
     self:InitControls()
@@ -350,7 +350,7 @@ end
 function spawner_dialog:__finalize() end
 
 function spawner_dialog:InitControls()
-    -- РћРєРЅРѕ 700x580, С†РµРЅС‚СЂРёСЂРѕРІР°РЅРѕ РЅР° 1024x768
+    -- Окно 700x580, центрировано на 1024x768
     self:Init(162, 100, 700, 580)
 
     local xml = CScriptXmlInit()
@@ -362,7 +362,7 @@ function spawner_dialog:InitControls()
     self.status_st    = xml:InitStatic("status_static",self)
     self.hint_st      = xml:InitStatic("hint_static",  self)
 
-    -- 10 РєРЅРѕРїРѕРє РєР°С‚РµРіРѕСЂРёР№ (СЃР»РµРІР°)
+    -- 10 кнопок категорий (слева)
     self.btn_cat = {}
     for i = 1, #CAT_ORDER do
         local b = xml:Init3tButton("cat_"..(i-1), self)
@@ -370,7 +370,7 @@ function spawner_dialog:InitControls()
         self.btn_cat[i] = b
     end
 
-    -- 10 РєРЅРѕРїРѕРє РїСЂРµРґРјРµС‚РѕРІ РЅР° СЃС‚СЂР°РЅРёС†Рµ (СЃРµС‚РєР° 3x4, 2 РїРѕСЃР»РµРґРЅРёС… РїСѓСЃС‚С‹С… СЃР»РѕС‚Р°)
+    -- 10 кнопок предметов на странице (сетка 3x4, 2 последних пустых слота)
     self.btn_item = {}
     for i = 1, ITEMS_PER_PAGE do
         local b = xml:Init3tButton("item_"..(i-1), self)
@@ -378,7 +378,7 @@ function spawner_dialog:InitControls()
         self.btn_item[i] = b
     end
 
-    -- РџР°РіРёРЅР°С†РёСЏ Рё Р·Р°РєСЂС‹С‚РёРµ
+    -- Пагинация и закрытие
     self.btn_prev  = xml:Init3tButton("btn_prev",  self)
     self.btn_next  = xml:Init3tButton("btn_next",  self)
     self.btn_close = xml:Init3tButton("btn_close", self)
@@ -386,7 +386,7 @@ function spawner_dialog:InitControls()
     self:Register(self.btn_next,  "btn_next")
     self:Register(self.btn_close, "btn_close")
 
-    -- РљРЅРѕРїРєРё-world toggles
+    -- Кнопки-world toggles
     self.btn_target = xml:Init3tButton("btn_target", self)
     self.btn_burst  = xml:Init3tButton("btn_burst",  self)
     self:Register(self.btn_target, "btn_target")
@@ -396,7 +396,7 @@ function spawner_dialog:InitControls()
     self:SetStatus("Ready. Press a category, then an item.")
 end
 
--- РћР±РЅРѕРІР»СЏРµС‚ С‚РµРєСЃС‚ toggle-РєРЅРѕРїРѕРє РїРѕ С‚РµРєСѓС‰РµРјСѓ СЃРѕСЃС‚РѕСЏРЅРёСЋ
+-- Обновляет текст toggle-кнопок по текущему состоянию
 function spawner_dialog:UpdateToggleButtons()
     if self.btn_target then
         self.btn_target:SetText((self.target_mode == "aim")
@@ -408,14 +408,14 @@ function spawner_dialog:UpdateToggleButtons()
     end
 end
 
--- РџРµСЂРµРєР»СЋС‡РµРЅРёРµ Aim <-> Actor
+-- Переключение Aim <-> Actor
 function spawner_dialog:OnToggleTarget()
     self.target_mode = (self.target_mode == "aim") and "actor" or "aim"
     self:UpdateToggleButtons()
     self:SetStatus("Target mode: " .. self.target_mode)
 end
 
--- Р¦РёРєР» burst: 1 -> 3 -> 5 -> 1
+-- Цикл burst: 1 -> 3 -> 5 -> 1
 function spawner_dialog:OnToggleBurst()
     local cycle = {1, 3, 5}
     local idx = 1
@@ -453,7 +453,7 @@ function spawner_dialog:SelectCategory(idx)
     if idx < 1 or idx > #CAT_ORDER then return end
     self.cur_cat = idx
     self.cur_page = 0
-    -- РђРєС‚РёРІРЅР°СЏ РєР°С‚РµРіРѕСЂРёСЏ РІС‹РєР»СЋС‡РµРЅР° (СЃРµСЂС‹Р№), РѕСЃС‚Р°Р»СЊРЅС‹Рµ РґРѕСЃС‚СѓРїРЅС‹
+    -- Активная категория выключена (серый), остальные доступны
     for i = 1, #CAT_ORDER do
         local key = CAT_ORDER[i]
         local cat = SPAWN_CFG[key]
@@ -533,7 +533,7 @@ function spawner_dialog:OnClose()
     self:CloseSpawner()
 end
 
--- Р—Р°РєСЂС‹С‚РёРµ СЃРїР°РІРЅРµСЂР°: СЃР±СЂРѕСЃ singleton + РІРѕР·РІСЂР°С‚ РІ ESC-РјРµРЅСЋ/РёРіСЂСѓ
+-- Закрытие спавнера: сброс singleton + возврат в ESC-меню/игру
 function spawner_dialog:CloseSpawner()
     if self.owner and self.owner.spawner_wnd == self then
         self.owner.spawner_wnd = nil
@@ -548,7 +548,7 @@ function spawner_dialog:CloseSpawner()
     else
         holder:start_stop_menu(self, true)
     end
-    -- Р’С‹С…РѕРґ РёР· ESC-РјРµРЅСЋ РІ РёРіСЂСѓ (С‚РѕР»СЊРєРѕ РµСЃР»Рё Р°РєС‚РѕСЂ Р¶РёРІ)
+    -- Выход из ESC-меню в игру (только если актор жив)
     local console = get_console()
     if level.present() and (db.actor ~= nil) and db.actor:alive() then
         console:execute("main_menu off")
@@ -569,9 +569,9 @@ function spawner_dialog:OnKeyboard(dik, keyboard_action)
     return true
 end
 
--- === Р›РѕРіРёРєР° СЃРїР°РІРЅР° ===============================================
+-- === Логика спавна ===============================================
 
--- РЎР»СѓС‡Р°Р№РЅС‹Р№ СЃС‚Р°Р»РєРµСЂ РёР· RANDOM_STALKER_POOL
+-- Случайный сталкер из RANDOM_STALKER_POOL
 function spawner_dialog:SpawnRandomStalker()
     local n = #RANDOM_STALKER_POOL
     if n == 0 then return 0, false end
@@ -582,9 +582,9 @@ function spawner_dialog:SpawnRandomStalker()
     })
 end
 
--- РЎРїР°РІРЅ СЃСѓС‰РµСЃС‚РІР° (РјСѓС‚Р°РЅС‚/NPC) РІ РјРёСЂРµ.
--- target_mode: "actor" вЂ” ~8Рј РѕС‚ Р“Р“; "aim" вЂ” РїРѕ Р»СѓС‡Сѓ РїСЂРёС†РµР»Р°
--- burst_count: 1/3/5 вЂ” РєРѕР»-РІРѕ СЌРєР·РµРјРїР»СЏСЂРѕРІ, СЂР°Р·РЅРµСЃС‘РЅРЅС‹С… РїРѕ РєСЂСѓРіСѓ
+-- Спавн существа (мутант/NPC) в мире.
+-- target_mode: "actor" — ~8м от ГГ; "aim" — по лучу прицела
+-- burst_count: 1/3/5 — кол-во экземпляров, разнесённых по кругу
 function spawner_dialog:SpawnInWorld(section, opts)
     opts        = opts or {}
     local a     = db.actor
@@ -596,14 +596,14 @@ function spawner_dialog:SpawnInWorld(section, opts)
     burst       = math.min(burst, 5)
     local tmode = opts.target_mode or self.target_mode or "actor"
 
-    -- 1) Р¦РµРЅС‚СЂ РіСЂСѓРїРїС‹
+    -- 1) Центр группы
     local center_lvid = a:level_vertex_id()
     local center_pos  = a:position()
     local center_gvid = a:game_vertex_id()
 
     if tmode == "aim" then
-        -- РџРѕР»СѓС‡РµРЅРёРµ РЅР°РїСЂР°РІР»РµРЅРёСЏ РєР°РјРµСЂС‹. РџСЂРѕР±СѓРµРј РЅРµСЃРєРѕР»СЊРєРѕ РІР°СЂРёР°РЅС‚РѕРІ,
-        -- С‚.Рє. РІ retail SoC 1.0006 С‡Р°СЃС‚СЊ binding'РѕРІ РѕС‚РєР»СЋС‡РµРЅР°.
+        -- Получение направления камеры. Пробуем несколько вариантов,
+        -- т.к. в retail SoC 1.0006 часть binding'ов отключена.
         local dir
         local cd_ok = pcall(function() dir = device and device():cam_dir() end)
         if (not cd_ok or dir == nil) then
@@ -629,13 +629,13 @@ function spawner_dialog:SpawnInWorld(section, opts)
         end
 
         if dir ~= nil then
-            -- Primary: 15 Рј (С‚РёРїРёС‡РЅР°СЏ РґР°Р»СЊРЅРѕСЃС‚СЊ РїСЂРёС†РµР»Р° SoC)
+            -- Primary: 15 м (типичная дальность прицела SoC)
             local aim_lvid
             local lv = level.vertex_in_direction(center_lvid, dir, 15.0)
             if lv ~= nil and lv < 65535 then
                 aim_lvid = lv
             else
-                -- Р¤РѕР»Р»Р±СЌРє: Р±Р»РёР¶Рµ/РґР°Р»СЊС€Рµ РµСЃР»Рё primary СѓРїРµСЂСЃСЏ РІ СЃС‚РµРЅСѓ
+                -- Фоллбэк: ближе/дальше если primary уперся в стену
                 for _, d in ipairs({5, 20, 25}) do
                     lv = level.vertex_in_direction(center_lvid, dir, d)
                     if lv ~= nil and lv < 65535 then
@@ -668,7 +668,7 @@ function spawner_dialog:SpawnInWorld(section, opts)
         end
     end
 
-    -- 2) Burst-С†РёРєР»: i=1 РІ center, РѕСЃС‚Р°Р»СЊРЅС‹Рµ СЂР°Р·РЅРѕСЃСЏС‚СЃСЏ РїРѕ РєСЂСѓРіСѓ
+    -- 2) Burst-цикл: i=1 в center, остальные разносятся по кругу
     local spawned = 0
     local last_err = nil
     for i = 1, burst do
@@ -676,17 +676,17 @@ function spawner_dialog:SpawnInWorld(section, opts)
         if i == 1 then
             lvid = center_lvid
         else
-            -- Multi-step retry: 5 РїРѕРїС‹С‚РѕРє СЃ СЂР°Р·РЅС‹РјРё СѓРіР»Р°РјРё/СЂР°РґРёСѓСЃР°РјРё.
-            -- Р“СЂР°С„ СѓСЂРѕРІРЅСЏ СЂР°Р·СЂРµР¶РµРЅРЅС‹Р№ (С€Р°Рі 10-30Рј), РјР°Р»С‹Рµ СЂР°РґРёСѓСЃС‹ РґР°СЋС‚
-            -- С‚Сѓ Р¶Рµ РІРµСЂС€РёРЅСѓ вЂ” burst-СЃСѓС‰РЅРѕСЃС‚Рё СЃС‚СЌРєР°СЋС‚СЃСЏ РІ РѕРґРЅСѓ С‚РѕС‡РєСѓ.
+            -- Multi-step retry: 5 попыток с разными углами/радиусами.
+            -- Граф уровня разреженный (шаг 10-30м), малые радиусы дают
+            -- ту же вершину — burst-сущности стэкаются в одну точку.
             local lvid_ok = nil
             for retry = 0, 4 do
                 local ang = math.random() * math.pi * 2.0
                 local r_lo, r_hi
                 if retry == 0 then
-                    r_lo, r_hi = 10, 18  -- Р±РѕР»СЊС€РѕР№ СЂР°РґРёСѓСЃ
+                    r_lo, r_hi = 10, 18  -- большой радиус
                 else
-                    r_lo, r_hi = 4, 8    -- РјРµРЅСЊС€РёР№ СЂР°РґРёСѓСЃ
+                    r_lo, r_hi = 4, 8    -- меньший радиус
                 end
                 local r = math.random(r_lo, r_hi)
                 local bdir = vector():set(math.cos(ang), 0.0001, math.sin(ang))
@@ -706,7 +706,7 @@ function spawner_dialog:SpawnInWorld(section, opts)
         end
         local pos = level.vertex_position(lvid)
 
-        -- alife():create() РІРѕР·РІСЂР°С‰Р°РµС‚ NUMBER (id), Р° РЅРµ server object
+        -- alife():create() возвращает NUMBER (id), а не server object
         local id
         local pok, perr = pcall(function()
             id = alife():create(section, pos, lvid, center_gvid)
@@ -714,9 +714,9 @@ function spawner_dialog:SpawnInWorld(section, opts)
         if not pok then
             last_err = tostring(perr or "create() failed")
         elseif id ~= nil then
-            -- sobj.position/lvid/gvid вЂ” READ-ONLY РІ SoC 1.0006, Р·Р°РїРёСЃСЊ = crash
+            -- sobj.position/lvid/gvid — READ-ONLY в SoC 1.0006, запись = crash
             spawned = spawned + 1
-            pcall(wait) -- anti-coalescing РјРµР¶РґСѓ alife():create
+            pcall(wait) -- anti-coalescing между alife():create
         else
             last_err = "create() returned nil"
         end
@@ -738,10 +738,10 @@ function spawner_dialog:SpawnInWorld(section, opts)
     return spawned, true
 end
 
--- РЎРїР°РІРЅ РїСЂРµРґРјРµС‚Р° РІ РёРЅРІРµРЅС‚Р°СЂСЊ Р“Р“.
--- Ammo: spawn_ammo_in_inv (СѓРїР°РєРѕРІС‹РІР°РµС‚ N РїР°С‚СЂРѕРЅРѕРІ РІ РѕРґРёРЅ РѕР±СЉРµРєС‚).
--- РџСЂРѕС‡РµРµ: N РѕС‚РґРµР»СЊРЅС‹С… spawn_item_in_inv.
--- Fallback: alife():create СЃ parent = actor id.
+-- Спавн предмета в инвентарь ГГ.
+-- Ammo: spawn_ammo_in_inv (упаковывает N патронов в один объект).
+-- Прочее: N отдельных spawn_item_in_inv.
+-- Fallback: alife():create с parent = actor id.
 function spawner_dialog:SpawnInInventory(section, count)
     local a = db.actor
     if a == nil then return false end
@@ -768,7 +768,7 @@ function spawner_dialog:SpawnInInventory(section, count)
         return (r ~= nil) and (r ~= false)
     end
 
-    -- Fallback: alife():create СЃ parent = actor
+    -- Fallback: alife():create с parent = actor
     local id = alife():create(section, a:position(), a:level_vertex_id(), a:game_vertex_id(), a:id())
     return id ~= nil and id ~= 0
 end
