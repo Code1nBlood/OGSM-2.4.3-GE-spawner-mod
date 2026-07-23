@@ -337,6 +337,7 @@ function spawner_dialog:__init(owner) super()
     -- burst_count: 1 | 3 | 5 (������ ��� world-kind)
     self.target_mode = "actor"
     self.burst_count = 1
+    self.god_mode    = (amk and amk.load_variable) and (amk.load_variable("ogsm_god_mode", 0) == 1) or false
     self:InitControls()
     self:InitCallBacks()
     self:SelectCategory(self.cur_cat)
@@ -559,6 +560,8 @@ function spawner_dialog:OnKeyboard(dik, keyboard_action)
             self:OnPrevPage()
         elseif dik == DIK_keys.DIK_RIGHT then
             self:OnNextPage()
+        elseif dik == DIK_keys.DIK_G then
+            self:ToggleGodMode()
         end
     end
     return true
@@ -772,6 +775,22 @@ function spawner_dialog:NotifyHUD(msg)
     if news_manager and news_manager.send_tip and db.actor then
         news_manager.send_tip(db.actor, "[OGSM] " .. msg, nil, nil, 4)
     end
+end
+
+function spawner_dialog:ToggleGodMode()
+    local actor = db.actor
+    if not actor then
+        self:SetStatus("Actor not available")
+        return
+    end
+    self.god_mode = not self.god_mode
+    if amk and amk.save_variable then
+        amk.save_variable("ogsm_god_mode", self.god_mode and 1 or 0)
+    end
+    local state = self.god_mode and "ON" or "OFF"
+    local msg = "God mode: " .. state
+    self:SetStatus(msg)
+    self:NotifyHUD(msg)
 end
 
 function spawner_dialog:ClickItem(slot)
