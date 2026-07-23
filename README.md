@@ -1,13 +1,16 @@
 # OGSM Spawner — Trainer-Style Menu Mod
 
-**Версия:** 1.5 
+**Версия:** 1.5.2 
 **Игра:** S.T.A.L.K.E.R.: Shadow of Chernobyl 1.0006  
 **Мод:** OGSM 2.4.3 Gold Edition  
-**Файлов:** 3 (2 new + 1 modified)
+**Файлов:** 4 (2 new + 2 modified)
 
 ---
 
 ## Changelog
+
+### v 1.5.2
+- Добавлено бессмеритие (кнопка G)
 
 ### v1.5 Fixes
 - Исправлены вылеты из-за секций артов
@@ -47,25 +50,8 @@
 ## Установка
 
 1. Скопируй `gamedata/` из архива в `<STALKER>/gamedata/`:
-   ```
-   gamedata/scripts/ui_spawner.script
-   gamedata/scripts/ui_main_menu.script
-   gamedata/config/ui/ui_spawner_wnd.xml
-   ```
 2. Игра → ESC → F1 (или кнопка "Спавнер")
 3. Категория слева → предмет справа 
-
----
-
-## Файлы
-
-| Файл | Тип | Назначение |
-|------|-----|------------|
-| `ui_spawner.script` | NEW | Скрипт спавнера (10 категорий, 41+ mutants, 31+ items, 39+ stalkers) |
-| `ui_main_menu.script` | MODIFIED | F1 хоткей + кнопка "Спавнер" |
-| `ui_spawner_wnd.xml` | NEW | UI окно 700×580, сетка 3×4 |
-
----
 
 ## Категории
 
@@ -98,10 +84,7 @@
 
 ## Ограничения
 
-- Торговцы спавнятся на логическом месте (по $spawn), не у актёра
-- AIM без bullet-trace — аппроксимация через vertex_in_direction
-- Burst 5x может вызвать frame stalls на старых CPU
-
+- Burst 5x может вызвать статтеры
 
 ---
 
